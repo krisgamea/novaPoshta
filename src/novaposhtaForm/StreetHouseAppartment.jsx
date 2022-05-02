@@ -4,7 +4,7 @@ import { TextField, Autocomplete, Box } from '@mui/material'
 import novaposhta from './novaposhta'
 
 export default ({
-  deliveryCityId,
+  cityId,
   streetId,
   setStreetId,
   house,
@@ -17,11 +17,17 @@ export default ({
 
   const getStreetSuggestionsDebounce = useCallback(
     _.debounce(async () => {
-      const data = await novaposhta.getStreetSuggestions(deliveryCityId, search)
+      if (!cityId || options.find(i => i.value === streetId)?.label === search) return
 
+      const data = await novaposhta.getStreetSuggestions(cityId, search)
       setOptions(data)
+
+      if (data.length === 1) {
+        setSearch(data[0].label)
+        setStreetId(data[0].value)
+      }
     }, 500),
-    [deliveryCityId, streetId, search]
+    [cityId, streetId, search]
   )
 
   useEffect(() => {
@@ -34,15 +40,16 @@ export default ({
     <Autocomplete
       options={options}
       getOptionLabel={option => option.label}
+
+      onInputChange={(e, value) => setSearch(value)}
       renderInput={params => (
         <TextField
           {...params}
           label='Вулиця'
-          onChange={e => setSearch(e.target.value)}
         />
       )}
 
-      value={options.find(option => option.value === deliveryCityId)}
+      value={options.find(option => option.value === streetId) || null}
 
       onChange={(e, value) => setStreetId(value?.value)}
     />

@@ -83,7 +83,7 @@ function App() {
     }
 
     const recipientAddressId = await (
-      senderAddressType === 'Warehouse'
+      destinationAddressType === 'Warehouse'
         ? novaposhta.savePersonDepartment({ cityId: destinationCityId, departmentId: destinationDepartmentId, userContactId: recipientContactId })
         : novaposhta.savePersonAddress({ cityId: destinationCityId, streetId: destinationStreetId, house: destinationHouse, appartment: destinationAppartment, userContactId: recipientContactId })
     )
@@ -146,7 +146,7 @@ function App() {
     const data = await novaposhta.createInvoice(invoicePayload)
     const invoice = data.data[0].IntDocNumber
 
-    const baseUrl = 'https://script.google.com/macros/s/AKfycbzcdonH1THHTYjx3mmi1vl0nC7tdQcI8dyoWObnWV-mulmXdX5a_0sYqFsHaTBF2iNE/exec'
+    const baseUrl = 'https://script.google.com/macros/s/AKfycbxIPafPk2JvzZcuO4g_mvHjVF5mM2oq93BUbTmjdvpo1PxMqIejqda42e8hw83bHXKE/exec'
     window.location.href = `${baseUrl}?orderId=${query.orderId}&invoice=${invoice}`
   }
 
@@ -235,7 +235,7 @@ function App() {
           )
             : (
               <StreetHouseAppartment
-                deliveryCityId={senderDeliveryCityId}
+                cityId={senderCityId}
                 streetId={senderStreetId}
                 setStreetId={setSenderStreetId}
                 house={senderHouse}
@@ -266,7 +266,6 @@ function App() {
             setDeliveryCityId={setDestinationDeliveryCityId}
             setCityId={setDestinationCityId}
             defaultValue={query.city}
-            t={true}
           />
 
           {destinationAddressType === 'Warehouse' ? (
@@ -275,11 +274,10 @@ function App() {
               departmentId={destinationDepartmentId}
               setDeprtmentId={setDestinationDepartmentId}
               defaultValue={query.postDepartment}
-              t={true}
             />)
             : (
               <StreetHouseAppartment
-                deliveryCityId={destinationDeliveryCityId}
+                cityId={destinationCityId}
                 streetId={destinationStreetId}
                 setStreetId={setDestinationStreetId}
                 house={destinationHouse}

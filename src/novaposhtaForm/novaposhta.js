@@ -74,20 +74,20 @@ const getStreetSuggestions = async (cityId, search) => {
   const data = await axios.post(baseUrl, {
     apiKey,
     modelName: "Address",
-    calledMethod: "getStreet",
+    calledMethod: "searchSettlementStreets",
     methodProperties: {
-      CityRef: cityId,
-      FindByString: search,
+      SettlementRef: cityId,
+      StreetName: search,
       Page: "1",
       Limit: "500"
     }
   })
 
-  if (!data?.data?.data?.length) return []
+  if (!data?.data?.data[0]?.Addresses?.length) return []
 
-  return data.data.data.map(item => ({
-    value: item.Ref,
-    label: item.StreetsType + ' ' + item.Description
+  return data.data.data[0].Addresses.map(item => ({
+    value: item.SettlementStreetRef,
+    label: item.Present
   }))
 }
 

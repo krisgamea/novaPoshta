@@ -45,9 +45,10 @@ export default ({ deliveryCityId, setDeliveryCityId, setCityId, defaultValue, t 
 
       value={options.find(option => option.value === deliveryCityId) || null}
       onChange={(e, value) => {
+        console.log('value', value)
         setDeliveryCityId(value?.value)
         if (!value?.value) return setCityId(null)
-        const cityId = options.find(i => i.value === value).cityId
+        const cityId = options.find(i => i.value === value.value).cityId
         setCityId(cityId)
       }}
     />

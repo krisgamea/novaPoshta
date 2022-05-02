@@ -171,18 +171,23 @@ const savePersonDepartment = async ({ cityId, departmentId, userContactId }) => 
 const saveContactPerson = async ({ counterpartyId, firstName, lastName, middleName, phoneNumber }) => {
   const data = await axios.post(baseUrl, {
     apiKey,
-    modelName: "ContactPersonGeneral",
+    modelName: "Counterparty",
     calledMethod: "save",
     methodProperties: {
       CounterpartyRef: counterpartyId,
       FirstName: firstName,
       LastName: lastName,
       MiddleName: middleName,
-      Phone: phoneNumber
+      Phone: phoneNumber,
+      CounterpartyType: "PrivatePerson",
+      CounterpartyProperty: "Recipient"
     }
   })
 
-  return data.data.data[0].Ref
+  return {
+    recipientId: data.data.data[0].Ref,
+    recipientContactId: data.data.data[0].ContactPerson.data[0].Ref
+  }
 }
 
 const createInvoice = async ({

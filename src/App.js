@@ -79,7 +79,13 @@ function App() {
     if (recipientInfo) {
       ({ recipientContactId, recipientId } = recipientInfo)
     } else {
-      ({ recipientContactId, recipientId } = await novaposhta.saveContactPerson({ counterpartyId, firstName: name, lastName: surname, middleName, phoneNumber }))
+      ({ recipientContactId, recipientId } = await novaposhta.saveContactPerson({
+        counterpartyId,
+        firstName: name,
+        lastName: surname,
+        middleName,
+        phoneNumber
+      }))
     }
 
     const recipientAddressId = await (

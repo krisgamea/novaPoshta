@@ -72,21 +72,13 @@ function App() {
         : novaposhta.savePersonAddress({ cityId: senderCityId, streetId: senderStreetId, house: senderHouse, appartment: senderAppartment, userContactId: senderContactId })
     )
 
-
-    let recipientContactId, recipientId
-
-    const recipientInfo = await novaposhta.getRecipientId(phoneNumber)
-    if (recipientInfo) {
-      ({ recipientContactId, recipientId } = recipientInfo)
-    } else {
-      ({ recipientContactId, recipientId } = await novaposhta.saveContactPerson({
-        counterpartyId,
-        firstName: name,
-        lastName: surname,
-        middleName,
-        phoneNumber
-      }))
-    }
+    const { recipientContactId, recipientId } = await novaposhta.saveContactPerson({
+      counterpartyId,
+      firstName: name,
+      lastName: surname,
+      middleName,
+      phoneNumber
+    })
 
     const recipientAddressId = await (
       destinationAddressType === 'Warehouse'
